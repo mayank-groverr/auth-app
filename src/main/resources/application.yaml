@@ -1,3 +1,7 @@
 spring:
   application:
     name: Authentication Application
+
+Server:
+  servlet:
+    context-path: /auth-app
