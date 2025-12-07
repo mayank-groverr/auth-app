@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import practice.mayank.auth.dto.UserRequest;
+import practice.mayank.auth.dto.UserResponse;
 import practice.mayank.auth.entity.User;
 import practice.mayank.auth.service.UserService;
 
@@ -17,18 +19,21 @@ public class UserController {
 
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getdetail(@PathVariable String email) {
-        User user = userService.getUser(email);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserResponse> getdetail(@PathVariable String email) {
+        UserResponse user = userService.getUser(email);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping({"/{email}"})
-    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
-        if (user != null) {
-            User updatedUser = userService.updateUser(email, user);
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable String email, @RequestBody UserRequest userRequest) {
+            UserResponse updatedUser = userService.updateUser(email, userRequest);
+            if (updatedUser != null){
+                return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{email}")

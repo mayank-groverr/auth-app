@@ -2,6 +2,9 @@ package practice.mayank.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import practice.mayank.auth.dto.UserRequest;
+import practice.mayank.auth.dto.UserResponse;
+import practice.mayank.auth.dto.mapper.GenericMapper;
 import practice.mayank.auth.entity.User;
 import practice.mayank.auth.repository.UserRepository;
 
@@ -10,17 +13,22 @@ import practice.mayank.auth.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final GenericMapper genericMapper;
 
 
-    public User getUser(String email) {
-        return findUserByEmail(email);
+    public UserResponse getUser(String email) {
+        User userInDb = findUserByEmail(email);
+        return genericMapper.userToUserResponse(userInDb);
     }
 
-    public User createNewUser(User user) {
-        return userRepository.save(user);
+    public UserResponse createNewUser(UserRequest userRequest) {
+        User user = genericMapper.userRequestToUser(userRequest);
+        User newUser = userRepository.save(user);
+        return genericMapper.userToUserResponse(newUser);
     }
 
-    public User updateUser(String email, User user) {
+    public UserResponse updateUser(String email, UserRequest userRequest) {
+        User user = genericMapper.userRequestToUser(userRequest);
         User userInDb = findUserByEmail(email);
         if (userInDb != null) {
             userInDb.setEmail((user.getEmail() != null && !user.getEmail().isEmpty()) ? user.getEmail() : userInDb.getEmail());
@@ -28,8 +36,9 @@ public class UserService {
             userInDb.setMobileNumber((user.getMobileNumber() != null && !user.getMobileNumber().isEmpty()) ? user.getMobileNumber() : userInDb.getMobileNumber());
             userInDb.setPassword((user.getPassword() != null && !user.getPassword().isEmpty()) ? user.getPassword() : userInDb.getPassword());
             userRepository.save(userInDb);
-            return userInDb;
+            return genericMapper.userToUserResponse(userInDb);
         }
+
         return null;
     }
 

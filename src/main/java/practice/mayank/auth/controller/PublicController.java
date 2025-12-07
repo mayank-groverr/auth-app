@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import practice.mayank.auth.entity.User;
+import practice.mayank.auth.dto.UserRequest;
+import practice.mayank.auth.dto.UserResponse;
 import practice.mayank.auth.service.UserService;
 
 @RestController
@@ -20,8 +21,8 @@ public class PublicController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User newUser = userService.createNewUser(user);
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest){
+        UserResponse newUser = userService.createNewUser(userRequest);
         return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
 
