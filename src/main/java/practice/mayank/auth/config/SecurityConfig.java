@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import practice.mayank.auth.entity.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +20,8 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/public/**").permitAll()
-                                .requestMatchers("/user/**").authenticated())
+                                .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.name()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)

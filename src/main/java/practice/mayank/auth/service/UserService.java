@@ -1,8 +1,6 @@
 package practice.mayank.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import practice.mayank.auth.dto.UserRequest;
@@ -18,7 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final GenericMapper genericMapper;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse getUser(String email) {
         User userInDb = findUserByEmail(email);
@@ -27,10 +25,19 @@ public class UserService {
 
     public UserResponse createNewUser(UserRequest userRequest) {
         User user = genericMapper.userRequestToUser(userRequest);
-        user.getRoles().add(Role.USER);
+        user.getRoles().add(Role.ROLE_USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User newUser = userRepository.save(user);
         return genericMapper.userToUserResponse(newUser);
+    }
+
+    public UserResponse createNewAdmin(UserRequest userRequest){
+        User user = genericMapper.userRequestToUser(userRequest);
+        user.getRoles().add(Role.ROLE_USER);
+        user.getRoles().add(Role.ROLE_ADMIN);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User newUser = userRepository.save(user);
+        return genericMapper.userToUserResponse(user);
     }
 
     public UserResponse updateUser(String email, UserRequest userRequest) {
