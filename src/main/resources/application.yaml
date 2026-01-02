@@ -5,3 +5,4 @@ spring:
 Server:
   servlet:
     context-path: /auth-app
+  port: 8081

@@ -1,4 +1,4 @@
-package practice.mayank.auth.dto.mapper;
+package practice.mayank.auth.mapper;
 
 import org.mapstruct.Mapper;
 import practice.mayank.auth.dto.UserRequest;
