@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import practice.mayank.auth.entity.Role;
+import practice.mayank.auth.security.CustomAccessDeniedHandler;
+import practice.mayank.auth.security.CustomAuthenticationEntryPoint;
 import practice.mayank.auth.security.JwtAuthenticationFilter;
 
 @Configuration
@@ -34,6 +36,10 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                    ex.accessDeniedHandler(new CustomAccessDeniedHandler());
+                })
                 .build();
     }
 
