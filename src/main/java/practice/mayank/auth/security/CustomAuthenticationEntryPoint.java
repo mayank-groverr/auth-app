@@ -20,10 +20,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.getWriter().write(
                 """
                         {
-                          "statusCode": 401,
-                          "message": "Unauthenticated User"
+                          "statusCode": %d,
+                          "message": "%s"
                         }
-                        """.formatted(HttpStatus.UNAUTHORIZED.value())
+                        """.formatted(HttpStatus.UNAUTHORIZED.value(), authException.getMessage())
 
         );
     }

@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/get")
-    public ResponseEntity<UserResponse> getdetail() {
+    public ResponseEntity<UserResponse> getDetail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserResponse user = userService.getUser(auth.getName()); // Authenticated user email
         if (user != null) {

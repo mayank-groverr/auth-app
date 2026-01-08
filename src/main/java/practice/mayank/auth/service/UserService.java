@@ -75,7 +75,7 @@ public class UserService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),
-                        loginRequest.Password()));
+                        loginRequest.password()));
 
         return findUserByEmail(loginRequest.email());
 

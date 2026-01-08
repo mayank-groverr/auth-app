@@ -21,9 +21,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 """
                         {
                           "statusCode": %d,
-                          "message": "Unauthorized User"
+                          "message": "%s"
                         }
-                        """.formatted(HttpStatus.FORBIDDEN.value())
+                        """.formatted(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage())
 
         );
     }

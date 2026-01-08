@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.Map;
+
 
 @Service
 public class JwtService {
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     public JwtService(@Value("${security.jwt.secret_key}") String secretKey) {
         byte[] keyBytes = secretKey.getBytes();
