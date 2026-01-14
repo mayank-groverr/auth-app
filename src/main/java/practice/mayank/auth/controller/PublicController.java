@@ -36,12 +36,8 @@ public class PublicController {
     // Request with Credentials -> Verify -> Return token if valid
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
-
         User user = userService.authenticate(loginRequest);
-        if(user != null){
-            String token = jwtService.generateToken(user.getEmail());
-            return new ResponseEntity<>(token, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        String token = jwtService.generateToken(user.getEmail());
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }

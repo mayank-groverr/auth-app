@@ -46,7 +46,7 @@ public class JwtService {
     }
 
     // Expiration time and Token Check
-    public boolean tokenValidation(String token) {
+    public boolean isTokenValid(String token) {
         return checkExpiration(token);
     }
 

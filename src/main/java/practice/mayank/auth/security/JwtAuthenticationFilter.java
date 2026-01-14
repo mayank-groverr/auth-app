@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
 
     // Request with Credentials -> Allow -> Verify -> Set SecurityContextHolder
-    // Request without Credentials -> Deny
+    // Request should proceed in every case
     @Override
     protected void doFilterInternal(
            @NonNull HttpServletRequest request,
@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             
         String token = authorization.substring(7);
             
-        if(!jwtService.tokenValidation(token)){
+        if(!jwtService.isTokenValid(token)){
             filterChain.doFilter(request,response);
             return;
         }
