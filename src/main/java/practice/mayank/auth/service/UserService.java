@@ -3,7 +3,6 @@ package practice.mayank.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import practice.mayank.auth.dto.LoginRequest;
@@ -13,6 +12,9 @@ import practice.mayank.auth.mapper.GenericMapper;
 import practice.mayank.auth.entity.Role;
 import practice.mayank.auth.entity.User;
 import practice.mayank.auth.repository.UserRepository;
+import practice.mayank.auth.exception.customexception.ResourceNotFoundException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -81,8 +83,11 @@ public class UserService {
 
     }
 
-    private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findUserByEmail(String email) {
+        Optional<User> userInDB = userRepository.findByEmail(email);
+        return userInDB.orElseThrow(
+                () -> new ResourceNotFoundException("No user found with this email: " + email)
+        );
     }
 
 }
